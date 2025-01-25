@@ -1,12 +1,12 @@
 const {addLocation,
     removeLocation,
     updateLocation,
-    getAllLoaction,
-    getLocationById}=require('../controllers/location')
+    getAllLocations,
+    getLocationById}=require('../controllers/location.js')
     const express=require('express')
     const router=express()
 
-router.get('/',getAllLoaction)
+router.get('/',getAllLocations)
 router.post('/',addLocation)
 router.delete('/:id',removeLocation)
 router.put('/:id',updateLocation)

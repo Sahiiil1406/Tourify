@@ -17,13 +17,30 @@ const locationSchema = new mongoose.Schema({
         type: String
     },
     openTime: {
-        type: String, // You can also use Date type if you need to store specific date-time
+        type: String, // Consider changing to a specific time format if required
         required: true
     },
     closeTime: {
-        type: String, // You can also use Date type if you need to store specific date-time
+        type: String, // Consider changing to a specific time format if required
         required: true
-    }
+    },
+    coordinates: {
+        lat: {
+            type: Number,
+            required: true
+        },
+        lng: {
+            type: Number,
+            required: true
+        }
+    },
+    reviews: [
+        {
+            user: { type: String },
+            comment: { type: String },
+            rating: { type: Number, min: 0, max: 5 }
+        },
+    ]
 });
 
 const Location = mongoose.model('Location', locationSchema);

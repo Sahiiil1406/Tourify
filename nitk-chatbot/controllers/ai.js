@@ -2,9 +2,9 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const Location = require('../models/location'); // Ensure this path is correct
 const data = require('./data'); // Ensure this path is correct
 
-// Function to fetch locations (either from database or local data)
+// Function to fetch locations (either from the database or local data)
 const getLocations = async () => {
-    // Uncomment below line to fetch from database
+    // Uncomment below line to fetch from the database
     // const locs = await Location.find();
     let locs = data; // Using local data for now
     return locs;
@@ -40,30 +40,37 @@ const gemini = async (req, res) => {
         - Only use information from the locations array.
         - Output must be in JSON format.
         - Ensure the plan is time-optimized.
+        -Keep comments in mind during response and include relevant comment info in textual response.
         - Include a textual explanation of the plan within the JSON object under the key "textualExplanation".
+        -Output Format:
+        {
+            "textualExplanation":"Some explanation",
+            "plan":[{
+                "time":3pm-4pm",
+                "location":"HCC",
+                "notes":"",
+                "coordinates":""
+            },{}]
+        }
 
         User's Question: ${question}
         Locations: ${JSON.stringify(locations)}
         `;
 
-        // Generate response using Gemini AI
+    
         const response = await model.generateContent([prompt]);
         const reply = response.response.candidates[0].content.parts[0].text;
-
-        // Preprocess the response to remove Markdown syntax
         const cleanedReply = reply.replace(/```json/g, "").replace(/```/g, "").trim();
-
-        // Parse the cleaned reply to ensure it's valid JSON
-        console.log(cleanedReply);
         let parsedReply;
         try {
             parsedReply = JSON.parse(cleanedReply);
+            console.log(parsedReply)
         } catch (e) {
-            throw new Error("Invalid JSON format in the AI response.");
+            throw new Error("Error processing the AI response or enhancing the data: " + e.message);
         }
 
-        // Return the response
-        console.log(parsedReply);
+        // Return the enhanced response
+        //console.log(parsedReply);
         return res.json(parsedReply);
     } catch (error) {
         console.error("Error in gemini function:", error);
