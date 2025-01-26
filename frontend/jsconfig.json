@@ -1,0 +1,26 @@
+{
+	"compilerOptions": {
+		"target": "ESNext", // Use ESNext as the target from the second config
+		"useDefineForClassFields": true, // Retained from the second config
+		"lib": ["DOM", "DOM.Iterable", "ESNext"], // Use the DOM and ESNext libraries from both configs
+		"allowJs": true, // Allow JavaScript files from the first config
+		"checkJs": false, // Only in the first config, explicitly disables checking of JavaScript files
+		"skipLibCheck": true, // Skipped library checks from both configs
+		"esModuleInterop": true, // Keep "true" for ES module interop from the first config
+		"allowSyntheticDefaultImports": true, // Enable synthetic default imports
+		"strict": true, // Enable strict type-checking options from the second config
+		"forceConsistentCasingInFileNames": true, // Enforce file name casing consistency
+		"module": "ESNext", // Use ESNext as the module system from both configs
+		"moduleResolution": "Node", // Use Node module resolution strategy
+		"resolveJsonModule": true, // Allows importing JSON modules
+		"isolatedModules": true, // Treat each file as an isolated module
+		"noEmit": true, // Prevent emitting compiled files
+		"jsx": "react-jsx", // Use React's JSX support from both configs
+		"baseUrl": ".", // Base URL for resolving paths from both configs
+		"paths": {
+			"@/*": ["./src/*"] // Path alias for imports from both configs
+		}
+	},
+	"include": ["src/**/*"], // Include all files under the src directory
+	"exclude": ["node_modules"] // Exclude node_modules
+}
