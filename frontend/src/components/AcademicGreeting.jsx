@@ -2,22 +2,22 @@ import React from "react";
 import { AiOutlineRobot } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 
-const StarterSection = () => {
+const AcademicStarterSection = () => {
 	const navigate = useNavigate();
 
 	const suggestions = [
 		{
-			label: "Timing of HCC",
+			label: "What is stokes theorem",
 			action: () => alert("Timing of HCC"),
 			color: "bg-blue-500/20",
 		},
 		{
-			label: "Beaches Near Me",
+			label: "Explain inked Lists",
 			action: () => alert("Beaches Near You"),
 			color: "bg-green-500/20",
 		},
 		{
-			label: "Restaurants Near Me",
+			label: "What are Category B Credits",
 			action: () => alert("Restaurants Near You"),
 			color: "bg-red-500/20",
 		},
@@ -44,7 +44,9 @@ const StarterSection = () => {
 
 			{/* Greeting Section */}
 			<div className="text-center">
-				<h1 className="text-4xl font-bold"># Welcome to the Travel Planner!</h1>
+				<h1 className="text-4xl font-bold">
+					# Welcome to the Academic Assistant
+				</h1>
 				<p className="text-xl mt-2">How can I assist you today?</p>
 			</div>
 
@@ -64,4 +66,4 @@ const StarterSection = () => {
 	);
 };
 
-export default StarterSection;
+export default AcademicStarterSection;

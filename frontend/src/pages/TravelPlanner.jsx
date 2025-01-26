@@ -183,7 +183,12 @@ const TravelPlanner = () => {
 							<MapContainer
 								center={[12.9712, 74.7925]}
 								zoom={15}
-								style={{ height: "100%", width: "100%" }}
+								style={{
+									height: "100%",
+									width: "100%",
+									borderRadius: "30px",
+									overflow: "hidden",
+								}}
 							>
 								<TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 								{plan.map((item, index) => (
