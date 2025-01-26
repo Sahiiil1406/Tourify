@@ -5,20 +5,10 @@ import { motion } from "framer-motion";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import axios from "axios";
+import StarterSection from "@/components/Greeting";
 
 const TravelPlanner = () => {
-	const [messages, setMessages] = useState([
-		{
-			text: "# Welcome to the Travel Planner!",
-			sender: "bot",
-			id: 1,
-		},
-		{
-			text: "**How can I assist you today?**",
-			sender: "bot",
-			id: 2,
-		},
-	]);
+	const [messages, setMessages] = useState([]);
 	const [input, setInput] = useState("");
 	const [plan, setPlan] = useState(null);
 	const [isListening, setIsListening] = useState(false);
@@ -239,6 +229,10 @@ const TravelPlanner = () => {
 			<div className="flex flex-col mx-auto bg-[#242424] rounded-3xl shadow-xl overflow-hidden w-full h-full">
 				{/* Chat Messages */}
 				<div className="relative flex-1 overflow-y-auto p-4 space-y-4 hide-scrollbar px-16">
+					<div>
+						<StarterSection />
+					</div>
+
 					{messages.map((message) => (
 						<motion.div
 							key={message.id}
