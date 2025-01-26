@@ -13,6 +13,7 @@ import ChatInterface from "./pages/ChatInterface";
 import TravelPlanner from "./pages/TravelPlanner";
 import AcademicAssistant from "./pages/AcademicAssistant";
 import ScheduleManager from "./pages/ScheduleManager";
+import DataManagementDashboard from "./pages/ManageData";
 const App = () => {
 	return (
 		<div className="flex h-screen">
@@ -50,7 +51,7 @@ const App = () => {
 						<Route path="/travel-planner" element={<TravelPlanner />} />
 						<Route path="/academic-assistant" element={<AcademicAssistant />} />
 						<Route path="/schedule-manager" element={<ScheduleManager />} />
-						{/*<Route path="/manage-data" element={<ManageData />} /> */}
+						<Route path="/manage-data" element={<DataManagementDashboard />} />
 					</Routes>
 				</div>
 			</div>
