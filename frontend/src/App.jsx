@@ -7,6 +7,7 @@ import { Route, Routes } from "react-router";
 import "./index.css";
 import ChatInterface from "./pages/ChatInterface";
 import TravelPlanner from "./pages/TravelPlanner";
+import DataManagementDashboard from "./pages/ManageData";
 const App = () => {
 	return (
 		<div className="flex h-screen">
@@ -24,8 +25,8 @@ const App = () => {
 								path="/academic-assistant"
 								element={<AcademicAssistant />}
 							/>
-							<Route path="/schedule-manager" element={<ScheduleManager />} />
-							<Route path="/manage-data" element={<ManageData />} /> */}
+							<Route path="/schedule-manager" element={<ScheduleManager />} /> */}
+							<Route path="/manage-data" element={<DataManagementDashboard />} />
 					</Routes>
 				</div>
 			</div>
