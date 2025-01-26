@@ -1,5 +1,7 @@
 # TOURIFY:NITK Interactive Chatbot
 
+video link(https://drive.google.com/drive/folders/1MaSaQrJEU7vK00vMDJ0FyDFwPnDvlbeW?usp=drive_link)
+
 ## Project Overview
 An AI-powered chatbot designed to enhance the campus experience at NITK by providing comprehensive, real-time information about campus facilities, operating hours, and local travel recommendations.
 
@@ -39,3 +41,18 @@ An AI-powered chatbot designed to enhance the campus experience at NITK by provi
 - Machine learning-based personalized recommendations
 - Multi-language support
 - Integration with institute's official communication channels
+
+![image](https://github.com/user-attachments/assets/cd23c800-6083-45cd-ab6e-cb5a2d0ce352)
+![image](https://github.com/user-attachments/assets/dfd04e68-2aaf-4b30-a8cc-04a9d2070b42)
+![image](https://github.com/user-attachments/assets/17032840-7a7f-4a86-8cda-b4c37165051e)
+![image](https://github.com/user-attachments/assets/e7fff503-2119-41b8-b643-9c83ade0cd10)
+![image](https://github.com/user-attachments/assets/623e4222-f1bd-49c0-9a16-3bfc8491464b)
+![image](https://github.com/user-attachments/assets/6625430a-30f6-4c4d-9364-7cc1c6aaf794)
+![image](https://github.com/user-attachments/assets/39bfac20-76ba-4b90-a19d-fcc394e45982)
+
+
+
+
+
+
+
