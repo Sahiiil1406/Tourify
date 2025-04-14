@@ -34,6 +34,7 @@ const locationTypes = [
 	"Hotel",
 	"Tourist Attraction",
 	"Park",
+	"study"
 ];
 
 export default function DataManagementDashboard() {

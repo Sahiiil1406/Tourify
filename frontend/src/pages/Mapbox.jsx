@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-leaflet";
 import { Send, User, Mic, MicOff, Volume2, VolumeX } from "lucide-react";
 import { motion } from "framer-motion";
 import "leaflet/dist/leaflet.css";
@@ -7,16 +7,32 @@ import L from "leaflet";
 import axios from "axios";
 import StarterSection from "@/components/Greeting";
 
-const TravelPlanner = () => {
+// Component to handle map view update when location changes
+const LocationMarker = ({ position, setPosition }) => {
+  const map = useMap();
+  
+  useEffect(() => {
+    if (position) {
+      map.flyTo(position, map.getZoom());
+    }
+  }, [position, map]);
+  
+  return null;
+};
+
+const MapBox = () => {
 	const [messages, setMessages] = useState([]);
 	const [input, setInput] = useState("");
 	const [plan, setPlan] = useState(null);
 	const [isListening, setIsListening] = useState(false);
 	const [isSpeaking, setIsSpeaking] = useState(false);
 	const [currentLocation, setCurrentLocation] = useState(null);
+	const [locationError, setLocationError] = useState(null);
+	const [isLoadingLocation, setIsLoadingLocation] = useState(true);
 	const messagesEndRef = useRef(null);
 	const recognitionRef = useRef(null);
 	const synthesisRef = useRef(null);
+	const mapRef = useRef(null);
 
 	// Speech Recognition Setup
 	useEffect(() => {
@@ -47,27 +63,6 @@ const TravelPlanner = () => {
 			synthesisRef.current = window.speechSynthesis;
 		}
 
-		// Get current location
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(
-				(position) => {
-					setCurrentLocation({
-						lat: position.coords.latitude,
-						lng: position.coords.longitude
-					});
-				},
-				(error) => {
-					console.error("Error getting location:", error);
-					// Default location if geolocation fails (using NITK coordinates as fallback)
-					setCurrentLocation({ lat: 12.3284, lng: 76.6126 });
-				}
-			);
-		} else {
-			console.warn("Geolocation is not supported by this browser");
-			// Default location
-			setCurrentLocation({ lat: 12.3284, lng: 76.6126});
-		}
-
 		// Cleanup
 		return () => {
 			if (recognitionRef.current) {
@@ -79,12 +74,79 @@ const TravelPlanner = () => {
 		};
 	}, []);
 
+	// Separate useEffect for geolocation to make it more reliable
+	useEffect(() => {
+		setIsLoadingLocation(true);
+		setLocationError(null);
+		
+		// Get current location with updated error handling
+		const getLocation = () => {
+			if (!navigator.geolocation) {
+				setLocationError("Geolocation is not supported by your browser");
+				setIsLoadingLocation(false);
+				// Set default location
+				setCurrentLocation({ lat: 13.007858646548794, lng: 74.79507212291739 });
+				return;
+			}
+			
+			const success = (position) => {
+				const { latitude, longitude } = position.coords;
+				console.log("Location found:", latitude, longitude);
+				setCurrentLocation({ lat: latitude, lng: longitude });
+				setIsLoadingLocation(false);
+			};
+			
+			const error = (err) => {
+				console.error("Error getting location:", err);
+				setLocationError(`Error getting location: ${err.message}`);
+				setIsLoadingLocation(false);
+				// Set default location on error
+				setCurrentLocation({ lat: 13.007858646548794, lng: 74.79507212291739 });
+			};
+			
+			// Options to get more accurate position
+			const options = {
+				enableHighAccuracy: true, // Use GPS if available
+				timeout: 10000,          // Time to wait before error (10 seconds)
+				maximumAge: 0            // Don't use cached position
+			};
+			
+			// Request position with improved options
+			navigator.geolocation.getCurrentPosition(success, error, options);
+		};
+		
+		getLocation();
+		
+		// Add event listener for when the device changes location (useful for mobile)
+		const watchId = navigator.geolocation && navigator.geolocation.watchPosition(
+			(position) => {
+				setCurrentLocation({
+					lat: position.coords.latitude,
+					lng: position.coords.longitude
+				});
+				setIsLoadingLocation(false);
+			},
+			(err) => {
+				console.warn("Error watching position:", err);
+			},
+			{ enableHighAccuracy: true }
+		);
+		
+		// Cleanup watchPosition
+		return () => {
+			if (watchId && navigator.geolocation) {
+				navigator.geolocation.clearWatch(watchId);
+			}
+		};
+	}, []);
+
 	const fetchPlan = async (question = "hello") => {
 		try {
 			const response = await axios.post(
 				"http://localhost:5000/ai",
 				{
 					question: question,
+					location: currentLocation // Send current location to backend
 				},
 				{
 					headers: { "Content-Type": "application/json" },
@@ -219,22 +281,29 @@ const TravelPlanner = () => {
 				// Calculate map center - use the first destination or current location if available
 				const mapCenter = plan.length > 0 && plan[0].coordinates ? 
 					[plan[0].coordinates.lat, plan[0].coordinates.lng] : 
-					currentLocation ? [currentLocation.lat, currentLocation.lng] : [13.007858646548794,74.79507212291739];
+					currentLocation ? [currentLocation.lat, currentLocation.lng] : [13.007858646548794, 74.79507212291739];
 				
 				// Create map component with paths
 				const MapWithPaths = () => {
 					return (
 						<MapContainer
 							center={mapCenter}
-							zoom={50}
+							zoom={13} // Reduced zoom level for better visibility
 							style={{
 								height: "100%",
 								width: "100%",
 								borderRadius: "30px",
 								overflow: "hidden",
 							}}
+							ref={mapRef}
 						>
 							<TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+							
+							{/* Add LocationMarker component to update view when location changes */}
+							<LocationMarker 
+								position={currentLocation ? [currentLocation.lat, currentLocation.lng] : null}
+								setPosition={setCurrentLocation}
+							/>
 							
 							{/* Current location marker (blue) */}
 							{currentLocation && (
@@ -285,7 +354,18 @@ const TravelPlanner = () => {
 					{
 						component: (
 							<div style={{ height: "400px", width: "100%" }}>
-								<MapWithPaths />
+								{locationError ? (
+									<div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4">
+										<p>{locationError}</p>
+										<p>Using default location instead.</p>
+									</div>
+								) : isLoadingLocation ? (
+									<div className="flex justify-center items-center h-full">
+										<p>Loading your location...</p>
+									</div>
+								) : (
+									<MapWithPaths />
+								)}
 							</div>
 						),
 						sender: "bot",
@@ -389,4 +469,4 @@ const TravelPlanner = () => {
 	);
 };
 
-export default TravelPlanner;
+export default MapBox;

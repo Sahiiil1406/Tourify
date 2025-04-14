@@ -6,6 +6,7 @@ import {
 	AiOutlineCalendar,
 	AiOutlineDatabase,
 	AiOutlineMenu,
+	AiFillCode
 } from "react-icons/ai";
 import { MdChat, MdSchool } from "react-icons/md";
 import { Link, BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -55,6 +56,16 @@ const Sidebar = () => {
 					}
 					label="Schedule Manager"
 					route="/schedule-manager"
+					isCollapsed={isCollapsed}
+				/>
+				<SidebarItem
+					icon={
+						<span className=" p-4 mr-4 rounded-full bg-green-800/20">
+							<AiFillCode className="text-green-200 " />
+						</span>
+					}
+					label="Reviews"
+					route="/reviews"
 					isCollapsed={isCollapsed}
 				/>
 				<SidebarItem

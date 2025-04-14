@@ -5,6 +5,7 @@ import {
 	AiOutlineSetting,
 } from "react-icons/ai";
 import { MdChat } from "react-icons/md";
+import Maps from "./pages/Maps";
 
 import Sidebar from "./components/sidebar";
 import { Route, Routes } from "react-router";
@@ -14,6 +15,9 @@ import TravelPlanner from "./pages/TravelPlanner";
 import AcademicAssistant from "./pages/AcademicAssistant";
 import ScheduleManager from "./pages/ScheduleManager";
 import DataManagementDashboard from "./pages/ManageData";
+import MapBox from "./pages/Mapbox"
+import Reviews from "./pages/Reviews";
+
 const App = () => {
 	return (
 		<div className="flex h-screen">
@@ -32,7 +36,7 @@ const App = () => {
 						</span>
 						<span className="text-white text-2xl font-semibold">
 							<b>NITK</b>
-							<i className="opacity-70"> ChatBot</i>
+							<i className="opacity-70"> AI Agent</i>
 						</span>
 					</div>
 
@@ -52,6 +56,10 @@ const App = () => {
 						<Route path="/academic-assistant" element={<AcademicAssistant />} />
 						<Route path="/schedule-manager" element={<ScheduleManager />} />
 						<Route path="/manage-data" element={<DataManagementDashboard />} />
+						<Route path="/maps" element={<Maps />} />
+						<Route path="/x" element={<MapBox />} />
+						<Route path="/reviews" element={<Reviews />} />
+
 					</Routes>
 				</div>
 			</div>
