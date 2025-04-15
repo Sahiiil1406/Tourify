@@ -5,11 +5,13 @@ const cors=require('cors')
 const mongoose = require('mongoose')
 const locationRoutes=require('./routes/location.js')
 const {addReview}=require('./controllers/location.js')
+const {setupDatabase}=require('./db/initDb.js')
+const { testConnection } = require('./db/sql.js');
 
 const connectDb=async()=>{
     try {
         await mongoose.connect(process.env.MONGODB_URI)
-        console.log("MONGODB connected")  
+        console.log("Database connected")  
     } catch (error) {
         console.log(error)
     }
@@ -33,5 +35,11 @@ app.get('/' , (req , res)=>{
 
 app.listen(port , async()=>{
     await connectDb()
+    //const connected = await testConnection();
+    // if (!connected) {
+    //     console.error('Failed to connect to database. Exiting...');
+    //     process.exit(1);
+    // }
+    // await setupDatabase()
     console.log(`Server is running at port ${port} 🪛`)
 })

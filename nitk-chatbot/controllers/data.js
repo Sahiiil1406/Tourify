@@ -7,8 +7,8 @@ const data = [
         openTime: '9:10am',
         closeTime: '9:00pm',
         coordinates: {
-            lat: 12.971598,
-            lng: 74.793854
+            lat: 13.0090219,
+            lng: 74.7955587
         },
         reviews: [
             {
@@ -151,8 +151,8 @@ const data = [
         openTime: '6:00am',
         closeTime: '7:00pm',
         coordinates: {
-            lat: 12.969000,
-            lng: 74.789900
+            lat: 13.0190219,
+            lng: 74.7555587
         },
         reviews: [
             {
